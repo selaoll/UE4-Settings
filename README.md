@@ -6,7 +6,7 @@ Fork of [ImpetusGames/UE4-Settings](https://github.com/ImpetusGames/UE4-Settings
 
 __Usage__
 
-Unzip the [zip](https://github.com/selaoll/UE4-Settings/VideoSettings.zip) into the Plugins directory of your game. (Create the directory if it doesn't exist)
+Unzip the [zip](https://github.com/selaoll/UE4-Settings/blob/master/VideoSettings.zip?raw=true) into the Plugins directory of your game. (Create the directory if it doesn't exist)
 
 To add it as an engine plugin you will need to unzip it into the plugin directory under where you installed UE4, for example *../UnrealEngine/4.10/Engine/Plugins*
 
