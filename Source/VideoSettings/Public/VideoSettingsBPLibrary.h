@@ -1,22 +1,35 @@
-
 #pragma once
 
-#include "Kismet/BlueprintFunctionLibrary.h"
-#include "BpVideoSettingsLib.generated.h"
+#include "Engine.h"
+#include "VideoSettingsBPLibrary.generated.h"
 
 #define MIN_SCREEN_WIDTH 1024
 #define MIN_SCREEN_HEIGHT 768
 
-
-/**
- * Custom Blueprint Function Library.
- */
+/* 
+*	Function library class.
+*	Each function in it is expected to be static and represents blueprint node that can be called in any blueprint.
+*
+*	When declaring function you can define metadata for the node. Key function specifiers will be BlueprintPure and BlueprintCallable.
+*	BlueprintPure - means the function does not affect the owning object in any way and thus creates a node without Exec pins.
+*	BlueprintCallable - makes a function which can be executed in Blueprints - Thus it has Exec pins.
+*	DisplayName - full name of the node, shown when you mouse over the node and in the blueprint drop down menu.
+*				Its lets you name the node using characters not allowed in C++ function names.
+*	CompactNodeTitle - the word(s) that appear on the node.
+*	Keywords -	the list of keywords that helps you to find node when you search for it using Blueprint drop-down menu. 
+*				Good example is "Print String" node which you can find also by using keyword "log".
+*	Category -	the category your node will be under in the Blueprint drop-down menu.
+*
+*	For more info on custom blueprint nodes visit documentation:
+*	https://wiki.unrealengine.com/Custom_Blueprint_Node_Creation
+*/
 UCLASS()
-class /* ADD YOUR GAME API NAME HERE !! */ UBpVideoSettingsLib : public UBlueprintFunctionLibrary
+class UVideoSettingsBPLibrary : public UBlueprintFunctionLibrary
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 
 public:
+
 	// Get a list of screen resolutions supported on this machine
 	UFUNCTION(BlueprintPure, Category = "Video Settings")
 	static bool GetSupportedScreenResolutions(TArray<FString>& Resolutions);
@@ -44,7 +57,7 @@ public:
 	// Set the quality settings (not applied nor saved yet)
 	UFUNCTION(BlueprintCallable, Category = "Video Settings")
 	static bool SetVideoQualitySettings(const int32 AntiAliasing = 3, const int32 Effects = 3, const int32 PostProcess = 3,
-		const int32 Resolution = 100, const int32 Shadow = 3, const int32 Texture = 3, const int32 ViewDistance = 3);
+			const int32 Resolution = 100, const int32 Shadow = 3, const int32 Texture = 3, const int32 ViewDistance = 3);
 
 	// Check whether or not we have vertical sync enabled
 	UFUNCTION(BlueprintPure, Category = "Video Settings")
@@ -63,6 +76,7 @@ public:
 	static bool RevertVideoMode();
 
 private:
+
 	// Try to get the GameUserSettings object from the engine
 	static UGameUserSettings* GetGameUserSettings();
 };

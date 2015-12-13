@@ -1,19 +1,24 @@
 
-/* ADD YOUR PROJECT.H INCLUDE HERE !! */
-#include "BpVideoSettingsLib.h"
+#include "VideoSettingsPrivatePCH.h"
+#include "VideoSettingsBPLibrary.h"
 
+UVideoSettingsBPLibrary::UVideoSettingsBPLibrary(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer)
+{
+
+}
 
 // Get a list of screen resolutions supported by video adapter
 // NOTE: This function needs "RHI" to be added to <Project>.Build.cs file!
-bool UBpVideoSettingsLib::GetSupportedScreenResolutions(TArray<FString>& Resolutions)
+bool UVideoSettingsBPLibrary::GetSupportedScreenResolutions(TArray<FString>& Resolutions)
 {
 	FScreenResolutionArray ResolutionsArray;
 
-	if(RHIGetAvailableResolutions(ResolutionsArray, true))  // needs the "RHI" dependency
+	if (RHIGetAvailableResolutions(ResolutionsArray, true))  // needs the "RHI" dependency
 	{
-		for(const FScreenResolutionRHI& Resolution : ResolutionsArray)
+		for (const FScreenResolutionRHI& Resolution : ResolutionsArray)
 		{
-			if(Resolution.Width < MIN_SCREEN_WIDTH || Resolution.Height < MIN_SCREEN_HEIGHT)
+			if (Resolution.Width < MIN_SCREEN_WIDTH || Resolution.Height < MIN_SCREEN_HEIGHT)
 			{
 				continue;
 			}
@@ -30,10 +35,10 @@ bool UBpVideoSettingsLib::GetSupportedScreenResolutions(TArray<FString>& Resolut
 
 
 // Get currently set screen resolution
-FString UBpVideoSettingsLib::GetScreenResolution()
+FString UVideoSettingsBPLibrary::GetScreenResolution()
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return FString("");
 	}
@@ -44,10 +49,10 @@ FString UBpVideoSettingsLib::GetScreenResolution()
 
 
 // Check whether or not we are currently running in fullscreen mode
-bool UBpVideoSettingsLib::IsInFullscreen()
+bool UVideoSettingsBPLibrary::IsInFullscreen()
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -57,10 +62,10 @@ bool UBpVideoSettingsLib::IsInFullscreen()
 
 
 // Set the desired screen resolution (does not change it yet)
-bool UBpVideoSettingsLib::SetScreenResolution(const int32 Width, const int32 Height, const bool Fullscreen)
+bool UVideoSettingsBPLibrary::SetScreenResolution(const int32 Width, const int32 Height, const bool Fullscreen)
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -72,10 +77,10 @@ bool UBpVideoSettingsLib::SetScreenResolution(const int32 Width, const int32 Hei
 
 
 // Change the current screen resolution
-bool UBpVideoSettingsLib::ChangeScreenResolution(const int32 Width, const int32 Height, const bool Fullscreen)
+bool UVideoSettingsBPLibrary::ChangeScreenResolution(const int32 Width, const int32 Height, const bool Fullscreen)
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -87,11 +92,11 @@ bool UBpVideoSettingsLib::ChangeScreenResolution(const int32 Width, const int32 
 
 
 // Get the current video quality settings
-bool UBpVideoSettingsLib::GetVideoQualitySettings(int32& AntiAliasing, int32& Effects, int32& PostProcess, 
+bool UVideoSettingsBPLibrary::GetVideoQualitySettings(int32& AntiAliasing, int32& Effects, int32& PostProcess,
 	int32& Resolution, int32& Shadow, int32& Texture, int32& ViewDistance)
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -108,11 +113,11 @@ bool UBpVideoSettingsLib::GetVideoQualitySettings(int32& AntiAliasing, int32& Ef
 
 
 // Set the quality settings (not applied nor saved yet)
-bool UBpVideoSettingsLib::SetVideoQualitySettings(const int32 AntiAliasing, const int32 Effects, const int32 PostProcess,
+bool UVideoSettingsBPLibrary::SetVideoQualitySettings(const int32 AntiAliasing, const int32 Effects, const int32 PostProcess,
 	const int32 Resolution, const int32 Shadow, const int32 Texture, const int32 ViewDistance)
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -129,10 +134,10 @@ bool UBpVideoSettingsLib::SetVideoQualitySettings(const int32 AntiAliasing, cons
 
 
 // Check whether or not we have vertical sync enabled
-bool UBpVideoSettingsLib::IsVSyncEnabled()
+bool UVideoSettingsBPLibrary::IsVSyncEnabled()
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -142,10 +147,10 @@ bool UBpVideoSettingsLib::IsVSyncEnabled()
 
 
 // Set the vertical sync flag
-bool UBpVideoSettingsLib::SetVSyncEnabled(const bool VSync)
+bool UVideoSettingsBPLibrary::SetVSyncEnabled(const bool VSync)
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -156,10 +161,10 @@ bool UBpVideoSettingsLib::SetVSyncEnabled(const bool VSync)
 
 
 // Confirm and save current video mode (resolution and fullscreen/windowed)
-bool UBpVideoSettingsLib::SaveVideoModeAndQuality()
+bool UVideoSettingsBPLibrary::SaveVideoModeAndQuality()
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -172,10 +177,10 @@ bool UBpVideoSettingsLib::SaveVideoModeAndQuality()
 
 
 // Revert to original video settings
-bool UBpVideoSettingsLib::RevertVideoMode()
+bool UVideoSettingsBPLibrary::RevertVideoMode()
 {
 	UGameUserSettings* Settings = GetGameUserSettings();
-	if(!Settings)
+	if (!Settings)
 	{
 		return false;
 	}
@@ -188,14 +193,12 @@ bool UBpVideoSettingsLib::RevertVideoMode()
 //---- PRIVATE METHODS -------------------------------------------------------------------------------
 
 // Try to get the GameUserSettings object from the engine
-UGameUserSettings* UBpVideoSettingsLib::GetGameUserSettings()
+UGameUserSettings* UVideoSettingsBPLibrary::GetGameUserSettings()
 {
-	if(GEngine != nullptr)
+	if (GEngine != nullptr)
 	{
 		return GEngine->GameUserSettings;
 	}
 
 	return nullptr;
 }
-
-
